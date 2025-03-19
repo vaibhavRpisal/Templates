@@ -1,0 +1,191 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudWatch Alarms for Amazon DocumentDB Cluster - Caas-docDB-test-cluster",
+  "Parameters": {
+    "ClusterName": {
+      "Type": "String",
+      "Default": "Caas-docDB-test-cluster"
+    },
+    "ClusterIdentifier": {
+      "Type": "String",
+      "Default": "Caas-docDB-test-cluster"
+    }
+  },
+  "Resources": {
+    "DocDBAlarmNotification": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": "DocDBAlarmNotifications"
+      }
+    },
+    "CPUUtilizationAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-CPUUtilization",
+        "AlarmDescription": "Triggers if CPU Utilization exceeds 80%",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "CPUUtilization",
+        "Statistic": "Average",
+        "Period": 300,
+        "EvaluationPeriods": 2,
+        "Threshold": 80,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "FreeableMemoryAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-FreeableMemory",
+        "AlarmDescription": "Triggers if freeable memory drops below 500MB",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "FreeableMemory",
+        "Statistic": "Average",
+        "Period": 300,
+        "EvaluationPeriods": 2,
+        "Threshold": 524288000,
+        "ComparisonOperator": "LessThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "ReadLatencyAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-ReadLatency",
+        "AlarmDescription": "Triggers if read latency exceeds 10ms",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "ReadLatency",
+        "Statistic": "Average",
+        "Period": 60,
+        "EvaluationPeriods": 2,
+        "Threshold": 0.01,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "DatabaseConnectionsAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-DatabaseConnections",
+        "AlarmDescription": "Triggers if database connections exceed 100",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "DatabaseConnections",
+        "Statistic": "Average",
+        "Period": 300,
+        "EvaluationPeriods": 2,
+        "Threshold": 100,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "VolumeBytesUsedAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-VolumeBytesUsed",
+        "AlarmDescription": "Triggers if volume bytes used exceeds 80GB",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "VolumeBytesUsed",
+        "Statistic": "Average",
+        "Period": 300,
+        "EvaluationPeriods": 2,
+        "Threshold": 80000000000,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "OpcountersDeleteAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-OpcountersDelete",
+        "AlarmDescription": "Triggers if delete operations exceed 1000 per minute",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "OpcountersDelete",
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 2,
+        "Threshold": 1000,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    },
+    "OpcountersInsertAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "Caas-docDB-test-cluster-OpcountersInsert",
+        "AlarmDescription": "Triggers if insert operations exceed 1000 per minute",
+        "Namespace": "AWS/DocDB",
+        "MetricName": "OpcountersInsert",
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 2,
+        "Threshold": 1000,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": "Caas-docDB-test-cluster"
+          }
+        ],
+        "AlarmActions": [
+          { "Ref": "DocDBAlarmNotification" }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "AlarmSNSArn": {
+      "Description": "SNS Topic ARN for CloudWatch Alarms",
+      "Value": {
+        "Ref": "DocDBAlarmNotification"
+      }
+    }
+  }
+}
